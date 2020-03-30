@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':gpiocontroller'
 rootProject.name='DB410C_Development'
