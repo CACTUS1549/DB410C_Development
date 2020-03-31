@@ -12,33 +12,39 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val gpioPortList = gpioController()
-        gpioPortList.getPortList()
+        val gpio_Control = gpioController()
+        gpio_Control.getPortList()
+        gpio_Control.gpioPin(915)
+
     }
 
 
     companion object{
         val TAG = "funGpioController"
         val PATH = "/sys/class/gpio/"
-        var gpioArrayList = ArrayList<String>()
+        val gpioPortList = arrayOf("gpio1017", "gpio901", "gpio914", "gpio915", "gpio926",
+            "gpio930", "gpio935", "gpio936", "gpio937", "gpio938", "gpio971")
     }
 
     class gpioController {
 
         fun getPortList(){
-            Log.i(TAG, "Getting GPIO Port List")
-            val directory = File(PATH)
-            val files = directory.list {directory, name -> name.startsWith("gpio")}
-            for ((index, item) in files.withIndex())
-            {
-                if (index >12){
-                    gpioArrayList.add(item.toUpperCase())
-                }
-            }
-            Log.i(TAG, "GPIO Ports are: ${gpioArrayList[0]}, ${gpioArrayList[1]}, ${gpioArrayList[2]}, ${gpioArrayList[3]}, " +
-                    "${gpioArrayList[4]}, ${gpioArrayList[5]}, ${gpioArrayList[6]}, " +
-                    "${gpioArrayList[7]}, ${gpioArrayList[8]}, ${gpioArrayList[9]}, ${gpioArrayList[10]}")
+            Log.v(TAG, "Getting GPIO Port List")
+            for (item in gpioPortList) Log.i(TAG, "$item" )
         }
-    }
+
+        fun gpioPin(pin: Int){
+
+                Log.v(TAG, "Checking if $pin is valid.")
+                val pinToCheck = "gpio$pin"
+                Log.v(TAG, "comparing $pinToCheck with gpioPortList")
+
+                    if (gpioPortList.contains(pinToCheck)){
+                        Log.i(TAG, "Initializing pin: $pin")
+                    } else{
+                        Log.i(TAG, "Please enter a Valid GPIO pin Number")
+                    }
+                }
+        }
 }
 
